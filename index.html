@@ -404,7 +404,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
   </div>
 
   <!-- 업로드 카드 리스트 (2열) -->
-  <div id="upload-list" style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;align-items:start;margin-bottom:24px"></div>
+  <div id="upload-list" style="display:flex;gap:16px;overflow-x:auto;align-items:start;padding-bottom:10px;margin-bottom:24px"></div>
 
   <!-- 타임라인 캘린더 -->
   <div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden">
@@ -439,6 +439,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
           <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">혀니</th>
           <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">민</th>
           <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">제이슨</th>
+          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">체리</th>
           <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);min-width:120px">촬영팀</th>
         </tr>
       </thead>
@@ -658,13 +659,17 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
       <option value="meeting">회의</option><option value="holiday">휴무</option>
       <option value="etc">기타</option>
     </select>
-    <label>멤버</label>
-    <select id="ev-member">
-      <option value="jini">지니</option><option value="olivia">올리비아</option>
-      <option value="ruby">루비</option><option value="hyeoni">혀니</option>
-      <option value="min">민</option><option value="jason">제이슨</option>
-      <option value="team">팀 전체</option>
-    </select>
+    <label>멤버 <span style="font-weight:400;color:#999">(복수 선택 가능)</span></label>
+    <div id="ev-member-cbs" style="display:flex;flex-wrap:wrap;gap:6px 14px;padding:2px 0 4px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="jini" style="width:auto;margin:0"> 지니</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="olivia" style="width:auto;margin:0"> 올리비아</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="ruby" style="width:auto;margin:0"> 루비</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="hyeoni" style="width:auto;margin:0"> 혀니</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="min" style="width:auto;margin:0"> 민</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="jason" style="width:auto;margin:0"> 제이슨</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="cherry" style="width:auto;margin:0"> 체리</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="team" style="width:auto;margin:0"> 팀 전체</label>
+    </div>
     <label>메모</label><textarea id="ev-memo" placeholder="메모 (선택)" style="height:60px"></textarea>
     <div class="modal-btns">
       <button class="btn btn-danger btn-sm" id="ev-delete-btn" style="display:none;margin-right:auto" onclick="deleteEventFromModal()">삭제</button>
@@ -723,6 +728,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="제이슨" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 제이슨</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="체리" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 체리</label>
         <div id="dates-제이슨" style="display:none;flex:1;gap:6px;align-items:center">
           <input type="date" id="es-제이슨" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
           <span style="font-size:11px;color:#888">~</span>
@@ -918,7 +924,8 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
 // ⚙️  여기에 입력하세요
 // ════════════════════════════════════════════
 const SUPABASE_URL = 'https://roujnirottmguqcodpnd.supabase.co';   // 예: https://xxxx.supabase.co
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvdWpuaXJvdHRtZ3VxY29kcG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODkyMTYsImV4cCI6MjA5ODU2NTIxNn0.K_m66wYqYs03W12OC1rklNV5hoiUVhwEeoTXN_irG0Q'; // Supabase anon public key
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvdWpuaXJvdHRtZ3VxY29kcG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODkyMTYsImV4cCI6MjA5ODU2NTIxNn0.K_m66wYqYs03W12OC1rklNV5hoiUVhwEeoTXN_irG0Q
+'; // Supabase anon public key
 const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Google Cloud Console에서 발급 (YouTube Data API v3)
 const YOUTUBE_CHANNEL_ID = 'UC9Ozb41qlL1CTnlsaxmKaGw'; // 안소희 @Ansohee.
 // ════════════════════════════════════════════
@@ -945,9 +952,18 @@ const MEMBERS = {
   hyeoni:{label:'혀니',    color:'#F4D77A'},
   min:   {label:'민',      color:'#B7C96A'},
   jason: {label:'제이슨',  color:'#7FB9E6'},
+  cherry:{label:'체리',    color:'#A10808'},
   team:  {label:'팀 전체', color:'#336688'}
 };
-const MEMBER_ORDER = ['jini','olivia','ruby','hyeoni','min','jason'];
+const MEMBER_ORDER = ['jini','olivia','ruby','hyeoni','min','jason','cherry'];
+const LABEL_TO_KEY={};Object.keys(MEMBERS).forEach(k=>{LABEL_TO_KEY[MEMBERS[k].label]=k;});
+function memberChips(memberStr){
+  if(!memberStr) return '';
+  return memberStr.split(',').map(x=>x.trim()).filter(Boolean).map(k=>{
+    const m=MEMBERS[k]; if(!m) return '';
+    return `<span style="font-size:10px;padding:1px 6px;border-radius:4px;font-weight:500;background:${m.color}22;color:${m.color};flex-shrink:0">${m.label}</span>`;
+  }).join('');
+}
 const AD_MANAGERS = ['캐니','메이지']; // 광고 담당자
 const statusMap = {
   done:   {label:'업로드 완료', cls:'status-done'},
@@ -1070,9 +1086,13 @@ function moveCal(d){
 function calToday(){ calCursor=new Date(); renderCalendar(); }
 
 function calEventChip(ev){
+  if(ev._virtual){
+    const vc=ev._virtual==='upload'?'#4282AA':'#EF9F27';
+    return `<div class="cal-ev" style="background:${vc}" title="${ev.title||''}" onclick="event.stopPropagation();showPage('${ev._virtual==='upload'?'upload':'shoot'}')">${ev.title}</div>`;
+  }
   const t=EVENT_TYPES[ev.type]||EVENT_TYPES.etc;
-  const m=MEMBERS[ev.member];
-  const label=(ev.title||ev.memo||t.label)+(m&&m.label!=='팀 전체'?` · ${m.label}`:'');
+  const names=(ev.member||'').split(',').map(k=>MEMBERS[k]&&MEMBERS[k].label).filter(x=>x&&x!=='팀 전체');
+  const label=(ev.title||ev.memo||t.label)+(names.length?` · ${names.join('·')}`:'');
   return `<div class="cal-ev" style="background:${t.color}" title="${(ev.title||'')+(ev.memo?' — '+ev.memo:'')}" onclick="event.stopPropagation();openEditEvent('${ev.id}')">${label}</div>`;
 }
 
@@ -1084,12 +1104,17 @@ function renderCalendar(){
 
   // 범례
   if(legend) legend.innerHTML=Object.values(EVENT_TYPES).map(t=>
-    `<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:9px;height:9px;border-radius:3px;background:${t.color}"></span>${t.label}</span>`).join('');
+    `<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:9px;height:9px;border-radius:3px;background:${t.color}"></span>${t.label}</span>`).join('')
+    +`<span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)"><span style="width:9px;height:9px;border-radius:3px;background:#4282AA"></span>📤 업로드(자동)</span>`;
 
   const today=fmt(new Date());
   const DOW=['일','월','화','수','목','금','토'];
   const evByDate={};
   events.forEach(e=>{ if(!evByDate[e.date])evByDate[e.date]=[]; evByDate[e.date].push(e); });
+  // 업로드 스케줄 자동 반영
+  uploadData.forEach(u=>{ if(!u.date)return; (evByDate[u.date]=evByDate[u.date]||[]).push({_virtual:'upload',title:'📤 '+u.title,date:u.date}); });
+  // 촬영 일정 자동 반영
+  shootDatesData.forEach(sd=>{ if(!sd.shoot_date)return; const up=uploadData.find(u=>u.id===sd.upload_id); (evByDate[sd.shoot_date]=evByDate[sd.shoot_date]||[]).push({_virtual:'shoot',title:'🎬 '+(up?up.title:'촬영'),date:sd.shoot_date}); });
 
   if(calView==='month'){
     const y=calCursor.getFullYear(), m=calCursor.getMonth();
@@ -1134,12 +1159,17 @@ function renderCalendar(){
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:3px;padding-top:3px">
           ${dayEvs.length?dayEvs.map(ev=>{
+            if(ev._virtual){
+              const vc=ev._virtual==='upload'?'#4282AA':'#EF9F27';
+              return `<div style="display:flex;align-items:center;gap:8px;padding:5px 9px;background:${vc}14;border-left:3px solid ${vc};border-radius:5px;cursor:pointer" onclick="event.stopPropagation();showPage('${ev._virtual==='upload'?'upload':'shoot'}')">
+                <span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ev.title}</span>
+              </div>`;
+            }
             const t=EVENT_TYPES[ev.type]||EVENT_TYPES.etc;
-            const m=MEMBERS[ev.member];
             return `<div style="display:flex;align-items:center;gap:8px;padding:5px 9px;background:${t.color}14;border-left:3px solid ${t.color};border-radius:5px;cursor:pointer" onclick="event.stopPropagation();openEditEvent('${ev.id}')">
               <span style="font-size:11px;font-weight:600;color:${t.color};flex-shrink:0">${t.label}</span>
               <span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ev.title||ev.memo||''}</span>
-              ${m?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;font-weight:500;background:${m.color}22;color:${m.color};flex-shrink:0">${m.label}</span>`:''}
+              ${memberChips(ev.member)}
             </div>`;
           }).join(''):`<span style="font-size:11px;color:var(--color-text-tertiary);padding-top:4px">일정 없음</span>`}
         </div>
@@ -1398,8 +1428,8 @@ function renderChannelChart(){
 }
 
 // ── 촬영 ──
-const SHOOT_MEMBERS = ['지니','올리비아','루비','혀니','민','제이슨'];
-const SHOOT_MEMBER_COLORS = {'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6'};
+const SHOOT_MEMBERS = ['지니','올리비아','루비','혀니','민','제이슨','체리'];
+const SHOOT_MEMBER_COLORS = {'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
 function renderShoot(){
   let data=[...uploadData];
   data.sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -1433,7 +1463,7 @@ function renderShoot(){
       ${memberCells}
       <td style="padding:10px 14px;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">${sh.shoot_team||''}</td>
     </tr>`;
-  }).join('') || `<tr><td colspan="9" style="padding:24px;text-align:center;font-size:12px;color:var(--color-text-secondary)">등록된 영상이 없어요</td></tr>`;
+  }).join('') || `<tr><td colspan="10" style="padding:24px;text-align:center;font-size:12px;color:var(--color-text-secondary)">등록된 영상이 없어요</td></tr>`;
 }
 
 function addShootDateRow(date='', note=''){
@@ -1537,7 +1567,7 @@ const MEETING_SECTIONS=[
   {key:'etc',   label:'💬 기타 논의', color:'#0C447C', bg:'#E6F1FB'},
 ];
 const MENTION_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
-const MEMBER_COLOR_MAP={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6'};
+const MEMBER_COLOR_MAP={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
 let curMentions=[];
 
 function changeMeetingYear(d){ meetingYear+=d; renderMeeting(); }
@@ -2062,9 +2092,24 @@ function renderUpload(){
   };
 
   const listEl=document.getElementById('upload-list');
-  if(listEl) listEl.innerHTML=data.length
-    ? data.map(makeCard).join('')
-    : `<div style="font-size:12px;color:var(--color-text-secondary);padding:8px;grid-column:1/-1">등록된 일정이 없어요</div>`;
+  if(listEl){
+    if(!data.length){
+      listEl.innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);padding:8px">등록된 일정이 없어요</div>`;
+    } else {
+      // 월별 그룹화 (YYYY-MM), 날짜 오름차순
+      const groups={};
+      data.forEach(u=>{ const key=(u.date||'').slice(0,7)||'0000-00'; (groups[key]=groups[key]||[]).push(u); });
+      const keys=Object.keys(groups).sort();
+      listEl.innerHTML=keys.map(k=>{
+        const [yy,mm]=k.split('-');
+        const head = k==='0000-00' ? '날짜 미정' : `${+mm}월<span style="font-size:10px;color:var(--color-text-tertiary);font-weight:400;margin-left:5px">${yy}</span>`;
+        return `<div style="flex:0 0 auto;min-width:252px;max-width:290px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:15px;font-weight:700;padding:0 2px 7px;border-bottom:2px solid var(--color-border-secondary);display:flex;align-items:center;gap:6px">${head}<span style="font-size:11px;color:var(--color-text-tertiary);font-weight:500;margin-left:auto">${groups[k].length}개</span></div>
+          ${groups[k].map(makeCard).join('')}
+        </div>`;
+      }).join('');
+    }
+  }
 
   renderTimeline();
 }
@@ -2076,7 +2121,7 @@ function renderTimeline(){
   const today=new Date();
   const pad=n=>String(n).padStart(2,'0');
   const TIMELINE_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
-  const memberColors={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6'};
+  const memberColors={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
   const grid=document.getElementById('timeline-grid');
   if(!grid) return;
 
@@ -2418,12 +2463,11 @@ function renderHome(){
   const renderEventRow=(ev)=>{
     const tL=EVENT_TYPES[ev.type]?.label||ev.type;
     const tC=EVENT_TYPES[ev.type]?.color||'#888';
-    const m=MEMBERS[ev.member];
     return `<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);cursor:pointer" onclick="openEditEvent('${ev.id}')">
       <span style="width:6px;height:6px;border-radius:50%;background:${tC};flex-shrink:0"></span>
       <span style="font-size:12px;font-weight:500;color:${tC};min-width:28px">${tL}</span>
-      <span style="font-size:12px;flex:1">${ev.title||ev.memo||m?.label||ev.member}</span>
-      ${m?`<span style="font-size:10px;padding:2px 6px;border-radius:var(--border-radius-md);font-weight:500;background:${m.color}22;color:${m.color}">${m.label}</span>`:''}
+      <span style="font-size:12px;flex:1">${ev.title||ev.memo||''}</span>
+      <span style="display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end">${memberChips(ev.member)}</span>
     </div>`;
   };
   // 오늘 일정
@@ -2684,7 +2728,7 @@ function openAddEvent(dateStr){
   document.getElementById('ev-range-wrap').style.display='grid';
   document.getElementById('ev-repeat-wrap').style.display='block';
   document.getElementById('ev-type').value='edit';
-  document.getElementById('ev-member').value='team';
+  document.querySelectorAll('.ev-member-cb').forEach(cb=>cb.checked=(cb.value==='team'));
   document.getElementById('ev-delete-btn').style.display='none';
   document.getElementById('modal-event').style.display='flex';
 }
@@ -2698,7 +2742,7 @@ function openEditEvent(id){
   document.getElementById('ev-end-date').value='';
   document.getElementById('ev-memo').value=ev.memo||'';
   document.getElementById('ev-type').value=ev.type||'etc';
-  document.getElementById('ev-member').value=MEMBERS[ev.member]?ev.member:'team';
+  {const keys=(ev.member||'team').split(',').map(x=>x.trim());document.querySelectorAll('.ev-member-cb').forEach(cb=>cb.checked=keys.includes(cb.value));}
   // 수정 시에는 단일 일정만 (반복/기간 숨김)
   document.getElementById('ev-repeat').value='none';
   document.getElementById('ev-repeat-until-wrap').style.display='none';
@@ -2858,7 +2902,8 @@ async function saveEvent(){
   if(!date){showToast('시작일을 선택해주세요');return;}
   const title=document.getElementById('ev-title').value.trim();
   const type=document.getElementById('ev-type').value;
-  const member=document.getElementById('ev-member').value;
+  const _mems=[...document.querySelectorAll('.ev-member-cb:checked')].map(cb=>cb.value);
+  const member=_mems.length?_mems.join(','):'team';
   const memo=document.getElementById('ev-memo').value;
 
   // 수정 모드: 해당 일정 한 건만 업데이트
