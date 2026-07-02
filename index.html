@@ -36,7 +36,6 @@ body{font-family:'Pretendard',sans-serif;background:var(--color-background-terti
 .sidebar-logo p{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:var(--color-text-secondary);font-size:13px;border-left:2px solid transparent;transition:all .15s}
 .nav-item:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
-.nav-item.active{color:#4282AA;border-left:2px solid #4282AA;background:var(--color-background-secondary);font-weight:500}
 .nav-item i{font-size:17px}
 .main{flex:1;padding:24px;overflow-x:hidden}
 .page{display:none}.page.active{display:block}
@@ -49,7 +48,6 @@ body{font-family:'Pretendard',sans-serif;background:var(--color-background-terti
 .toast.show{opacity:1}
 .btn{padding:7px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);cursor:pointer;font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);transition:background .1s;display:inline-flex;align-items:center;gap:5px}
 .btn:hover{background:var(--color-background-secondary)}
-.btn-primary{background:#4282AA;color:#fff;border-color:#4282AA}.btn-primary:hover{background:#336688}
 .btn-danger{color:#A32D2D;border-color:#F09595}.btn-danger:hover{background:#FCEBEB}
 .btn-sm{padding:3px 9px;font-size:11px}
 .badge{font-size:10px;padding:2px 7px;border-radius:var(--border-radius-md);font-weight:500}
@@ -924,15 +922,30 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
 // ⚙️  여기에 입력하세요
 // ════════════════════════════════════════════
 const SUPABASE_URL = 'https://roujnirottmguqcodpnd.supabase.co';   // 예: https://xxxx.supabase.co
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvdWpuaXJvdHRtZ3VxY29kcG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODkyMTYsImV4cCI6MjA5ODU2NTIxNn0.K_m66wYqYs03W12OC1rklNV5hoiUVhwEeoTXN_irG0Q
-'; // Supabase anon public key
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvdWpuaXJvdHRtZ3VxY29kcG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODkyMTYsImV4cCI6MjA5ODU2NTIxNn0.K_m66wYqYs03W12OC1rklNV5hoiUVhwEeoTXN_irG0Q'; // Supabase anon public key
 const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Google Cloud Console에서 발급 (YouTube Data API v3)
 const YOUTUBE_CHANNEL_ID = 'UC9Ozb41qlL1CTnlsaxmKaGw'; // 안소희 @Ansohee.
 // ════════════════════════════════════════════
 
 // Supabase 설정 확인 (미설정 시에도 페이지가 뜨도록 안전 처리)
 const CONFIG_OK = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('YOUR_') && !SUPABASE_KEY.includes('YOUR_');
-const db = CONFIG_OK ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+// supabase 라이브러리(CDN)가 아직/못 불러와졌을 때 스크립트 전체가 멈춰 무한로딩되는 것을 방지
+const SUPABASE_READY = (typeof supabase!=='undefined' && supabase && typeof supabase.createClient==='function');
+const db = (CONFIG_OK && SUPABASE_READY) ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+if(CONFIG_OK && !SUPABASE_READY){
+  // 설정은 됐는데 라이브러리 로드 실패 → 안내 후 로딩 해제
+  window.addEventListener('DOMContentLoaded',()=>{
+    try{ setLoading(false); }catch(e){}
+    const main=document.querySelector('.main');
+    if(main){
+      const b=document.createElement('div');
+      b.className='card';
+      b.style.cssText='margin-bottom:14px;border:0.5px solid #F0959580;background:#FCEBEB40';
+      b.innerHTML='<div style="font-size:13px;font-weight:500;color:#A32D2D;margin-bottom:6px">⚠️ Supabase 라이브러리를 불러오지 못했어요</div><div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7">인터넷 연결을 확인하고 페이지를 새로고침해주세요. 광고 차단기가 CDN을 막고 있을 수도 있어요.</div>';
+      main.insertBefore(b, main.firstElementChild);
+    }
+  });
+}
 function showSetupBanner(){
   const main=document.querySelector('.main');
   if(!main||document.getElementById('setup-banner'))return;
@@ -964,6 +977,8 @@ function memberChips(memberStr){
     return `<span style="font-size:10px;padding:1px 6px;border-radius:4px;font-weight:500;background:${m.color}22;color:${m.color};flex-shrink:0">${m.label}</span>`;
   }).join('');
 }
+// 한글 이름 기준 멤버 색상 맵 (MEMBERS 단일 출처에서 파생)
+const MEMBER_COLORS=Object.fromEntries(MEMBER_ORDER.map(k=>[MEMBERS[k].label,MEMBERS[k].color]));
 const AD_MANAGERS = ['캐니','메이지']; // 광고 담당자
 const statusMap = {
   done:   {label:'업로드 완료', cls:'status-done'},
@@ -1005,7 +1020,9 @@ async function loadData(){
   if(!db){ setLoading(false); showSetupBanner(); renderAll(); return; }
   setLoading(true);
   try{
-    const [evR,upR,noR,reR,moR,hwR,tkR,stR,msR,shR,sdR,adR,kpR,mtR,miR]=await Promise.all([
+    // 15초 넘게 응답이 없으면(Supabase 일시정지·URL 오류 등) 무한로딩을 막는다
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('연결 시간 초과')),15000));
+    const query=Promise.all([
       db.from('events').select('*').order('date'),
       db.from('uploads').select('*').order('date'),
       db.from('notices').select('*').order('pinned',{ascending:false}).order('created_at',{ascending:false}),
@@ -1022,6 +1039,7 @@ async function loadData(){
       db.from('meetings').select('*').order('created_at'),
       db.from('meeting_items').select('*').order('sort_order')
     ]);
+    const [evR,upR,noR,reR,moR,hwR,tkR,stR,msR,shR,sdR,adR,kpR,mtR,miR]=await Promise.race([query,timeout]);
     events=evR.data||[]; uploadData=upR.data||[]; noticeData=noR.data||[];
     resourceData=reR.data||[]; memoData=moR.data||[]; handoverData=hwR.data||[];
     shootData=shR.data||[]; shootDatesData=sdR.data||[];
@@ -1039,8 +1057,14 @@ async function loadData(){
     const todayStr=fmt(new Date());
     (stR.data||[]).forEach(s=>{if(s.date===todayStr)memberStatuses[s.member_id]=s;});
     renderAll();
-  }catch(e){showToast('로드 실패: '+e.message);}
-  setLoading(false);
+  }catch(e){
+    showToast(e.message==='연결 시간 초과'
+      ? 'Supabase 응답이 없어요. 프로젝트가 일시정지(sleep) 상태인지 대시보드에서 확인해주세요.'
+      : '로드 실패: '+e.message);
+    renderAll(); // 실패해도 빈 화면이라도 뜨게
+  }finally{
+    setLoading(false);
+  }
 }
 
 function subscribeRealtime(){
@@ -1429,7 +1453,7 @@ function renderChannelChart(){
 
 // ── 촬영 ──
 const SHOOT_MEMBERS = ['지니','올리비아','루비','혀니','민','제이슨','체리'];
-const SHOOT_MEMBER_COLORS = {'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
+const SHOOT_MEMBER_COLORS = MEMBER_COLORS;
 function renderShoot(){
   let data=[...uploadData];
   data.sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -1567,7 +1591,7 @@ const MEETING_SECTIONS=[
   {key:'etc',   label:'💬 기타 논의', color:'#0C447C', bg:'#E6F1FB'},
 ];
 const MENTION_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
-const MEMBER_COLOR_MAP={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
+const MEMBER_COLOR_MAP=MEMBER_COLORS;
 let curMentions=[];
 
 function changeMeetingYear(d){ meetingYear+=d; renderMeeting(); }
@@ -2121,7 +2145,7 @@ function renderTimeline(){
   const today=new Date();
   const pad=n=>String(n).padStart(2,'0');
   const TIMELINE_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
-  const memberColors={'지니':'#D6BEEA','올리비아':'#F98BA9','루비':'#FF8F45','혀니':'#F4D77A','민':'#B7C96A','제이슨':'#7FB9E6','체리':'#A10808'};
+  const memberColors=MEMBER_COLORS;
   const grid=document.getElementById('timeline-grid');
   if(!grid) return;
 
