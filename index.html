@@ -149,9 +149,6 @@ h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,
   #page-upload > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
   /* 리소스 그리드 1열 */
   .resource-grid{grid-template-columns:1fr !important}
-  /* 채널 현황 */
-  #ch-summary{grid-template-columns:1fr 1fr !important}
-  #ch-videos{grid-template-columns:1fr !important}
   #page-ad > div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
   #upload-list{grid-template-columns:1fr !important}
   /* 모달 */
@@ -219,9 +216,9 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
 <aside class="sidebar">
   <div class="sidebar-logo"><h1>팀 대시보드</h1><p>안소희</p></div>
   <div class="nav-item active" onclick="showPage('home',this)"><i class="ti ti-home"></i> 홈</div>
-  <div class="nav-item" onclick="showPage('channel',this)"><i class="ti ti-brand-youtube"></i> 채널 현황</div>
   <div class="nav-item" onclick="showPage('calendar',this)"><i class="ti ti-calendar"></i> 캘린더</div>
   <div class="nav-item" onclick="showPage('meeting',this)"><i class="ti ti-clipboard-text"></i> 회의</div>
+  <div class="nav-item" onclick="showPage('idea',this)"><i class="ti ti-bulb"></i> 아이디어 보관함</div>
   <div class="nav-item" onclick="showPage('upload',this)"><i class="ti ti-upload"></i> 업로드 스케줄</div>
   <div class="nav-item" onclick="showPage('shoot',this)"><i class="ti ti-camera"></i> 촬영</div>
   <div class="nav-item" onclick="showPage('ad',this)"><i class="ti ti-speakerphone"></i> 광고</div>
@@ -304,58 +301,6 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
   </div>
 </div>
 
-<!-- CHANNEL (채널 현황) -->
-<div id="page-channel" class="page">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-    <h2 class="page-title" style="margin:0">채널 현황</h2>
-    <div style="display:flex;gap:8px">
-      <a href="https://www.youtube.com/@Ansohee." target="_blank" rel="noopener" class="btn btn-sm" style="text-decoration:none"><i class="ti ti-external-link"></i> 채널 열기</a>
-      <button class="btn btn-sm" onclick="loadChannelPage(true)"><i class="ti ti-refresh"></i> 새로고침</button>
-    </div>
-  </div>
-
-  <!-- API 키 미설정 안내 -->
-  <div id="ch-setup-guide" class="card" style="display:none;margin-bottom:14px;border:0.5px solid #F0959580;background:#FCEBEB40">
-    <div style="font-size:13px;font-weight:500;color:#A32D2D;margin-bottom:6px">⚠️ YouTube API 키가 설정되지 않았어요</div>
-    <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.7">index.html 상단의 <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">YOUTUBE_API_KEY</code>에 Google Cloud Console에서 발급한 YouTube Data API v3 키를 입력해주세요. 자세한 방법은 README를 참고하세요.</div>
-  </div>
-
-  <!-- 채널 요약 -->
-  <div id="ch-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px"></div>
-
-  <!-- 최근 업로드 2개 -->
-  <div style="display:flex;align-items:center;gap:8px;margin:20px 0 10px">
-    <i class="ti ti-video" style="font-size:17px;color:#E24B4A"></i>
-    <span style="font-size:13px;font-weight:500">최근 업로드</span>
-    <span id="ch-videos-updated" style="font-size:11px;color:var(--color-text-secondary);margin-left:auto"></span>
-  </div>
-  <div id="ch-videos" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px"></div>
-
-  <!-- 추이 차트 -->
-  <div class="card" style="padding:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <i class="ti ti-chart-line" style="font-size:17px;color:#4282AA"></i>
-        <span style="font-size:13px;font-weight:500">채널 추이</span>
-      </div>
-      <div style="display:flex;gap:12px">
-        <div style="display:flex;gap:4px" id="ch-metric-tabs">
-          <button class="btn btn-sm" id="ch-metric-subs" onclick="setChartMetric('subs')" style="background:#4282AA;color:#fff;border-color:#4282AA">구독자</button>
-          <button class="btn btn-sm" id="ch-metric-views" onclick="setChartMetric('views')">조회수</button>
-        </div>
-        <div style="display:flex;gap:4px" id="ch-range-tabs">
-          <button class="btn btn-sm" id="ch-range-30" onclick="setChartRange(30)" style="background:#4282AA;color:#fff;border-color:#4282AA">30일</button>
-          <button class="btn btn-sm" id="ch-range-90" onclick="setChartRange(90)">90일</button>
-          <button class="btn btn-sm" id="ch-range-0" onclick="setChartRange(0)">전체</button>
-        </div>
-      </div>
-    </div>
-    <div id="ch-chart" style="min-height:220px"></div>
-    <p style="font-size:11px;color:var(--color-text-secondary);margin-top:10px">대시보드를 열 때마다 하루 1회 수치가 자동 기록돼요. 데이터가 쌓일수록 추이가 정확해집니다. (GitHub Actions 자동 기록도 설정 가능 — README 참고)</p>
-  </div>
-</div>
-
-<!-- CALENDAR -->
 <div id="page-calendar" class="page">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
     <div style="display:flex;align-items:center;gap:10px">
@@ -381,6 +326,40 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
 </div>
 
 <!-- UPLOAD -->
+<div id="page-idea" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <h2 class="page-title" style="margin:0">아이디어 보관함</h2>
+    <button class="btn btn-primary" onclick="openAddIdea()"><i class="ti ti-plus"></i> 아이디어 추가</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="idea-filters"></div>
+  <div id="idea-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;align-items:start"></div>
+</div>
+
+<!-- 아이디어 모달 -->
+<div id="modal-idea" class="modal-overlay" style="display:none" onclick="closeModal('modal-idea',event)">
+  <div class="modal" style="width:420px">
+    <h3 id="idea-modal-title">아이디어 추가</h3>
+    <input type="hidden" id="idea-edit-id">
+    <label>아이디어 제목</label><input type="text" id="idea-title" placeholder="예: 하루 종일 노란 것만 먹기">
+    <label>설명 <span style="font-weight:400;color:#999">(선택)</span></label>
+    <textarea id="idea-detail" rows="3" placeholder="어떤 내용인지, 참고할 점 등" style="resize:vertical"></textarea>
+    <label>제안자</label>
+    <select id="idea-proposer"></select>
+    <label>상태</label>
+    <select id="idea-status">
+      <option value="idea">💡 아이디어</option>
+      <option value="hold">🤔 검토 중</option>
+      <option value="adopted">✅ 채택</option>
+      <option value="dropped">🗄️ 보류</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn btn-danger btn-sm" id="idea-delete-btn" style="display:none;margin-right:auto" onclick="deleteIdea()">삭제</button>
+      <button class="btn" onclick="closeModal('modal-idea')">취소</button>
+      <button class="btn btn-primary" onclick="saveIdea()">저장</button>
+    </div>
+  </div>
+</div>
+
 <div id="page-upload" class="page">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
     <h2 class="page-title" style="margin:0">업로드 스케줄</h2>
@@ -428,19 +407,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
   <div style="overflow-x:auto">
     <table id="shoot-table" style="width:100%;border-collapse:collapse;background:var(--color-background-primary);border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary)">
       <thead>
-        <tr style="background:var(--color-background-secondary)">
-          <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);min-width:140px">영상 제목</th>
-          <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);min-width:90px">촬영일</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">지니</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">올리비아</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">루비</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">혀니</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">민</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">제이슨</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">체리</th>
-          <th style="padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">셀프캠</th>
-          <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);min-width:120px">촬영팀</th>
-        </tr>
+        <tr id="shoot-thead-row" style="background:var(--color-background-secondary)"></tr>
       </thead>
       <tbody id="shoot-tbody"></tbody>
     </table>
@@ -659,16 +626,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
       <option value="etc">기타</option>
     </select>
     <label>멤버 <span style="font-weight:400;color:#999">(복수 선택 가능)</span></label>
-    <div id="ev-member-cbs" style="display:flex;flex-wrap:wrap;gap:6px 14px;padding:2px 0 4px">
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="jini" style="width:auto;margin:0"> 지니</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="olivia" style="width:auto;margin:0"> 올리비아</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="ruby" style="width:auto;margin:0"> 루비</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="hyeoni" style="width:auto;margin:0"> 혀니</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="min" style="width:auto;margin:0"> 민</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="jason" style="width:auto;margin:0"> 제이슨</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="cherry" style="width:auto;margin:0"> 체리</label>
-      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="team" style="width:auto;margin:0"> 팀 전체</label>
-    </div>
+    <div id="ev-member-cbs" style="display:flex;flex-wrap:wrap;gap:6px 14px;padding:2px 0 4px"></div>
     <label>메모</label><textarea id="ev-memo" placeholder="메모 (선택)" style="height:60px"></textarea>
     <div class="modal-btns">
       <div style="margin-right:auto;display:flex;gap:6px">
@@ -688,73 +646,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
     <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-weight:400"><input type="checkbox" id="up-shorts" style="width:auto;margin:0"> 📱 Shorts (세로 영상)</label>
     <label>영상 제목</label><input type="text" id="up-title" placeholder="제목 입력">
     <label>담당자 <span style="font-weight:400;color:#999">(선택하면 편집 기간 입력 가능)</span></label>
-    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding:10px;background:#f8f8f8;border:1px solid #e0e0e0;border-radius:7px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="지니" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 지니</label>
-        <div id="dates-지니" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-지니" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-지니" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="올리비아" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 올리비아</label>
-        <div id="dates-올리비아" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-올리비아" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-올리비아" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="루비" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 루비</label>
-        <div id="dates-루비" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-루비" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-루비" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="혀니" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 혀니</label>
-        <div id="dates-혀니" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-혀니" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-혀니" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="민" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 민</label>
-        <div id="dates-민" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-민" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-민" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="제이슨" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 제이슨</label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="체리" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 체리</label>
-        <div id="dates-제이슨" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-제이슨" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-제이슨" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="외주" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 외주</label>
-        <div id="dates-외주" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-외주" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-외주" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="미정" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> 미정</label>
-        <div id="dates-미정" style="display:none;flex:1;gap:6px;align-items:center">
-          <input type="date" id="es-미정" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-          <span style="font-size:11px;color:#888">~</span>
-          <input type="date" id="ee-미정" style="flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none">
-        </div>
-      </div>
-    </div>
+    <div id="up-member-rows" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;padding:10px;background:#f8f8f8;border:1px solid #e0e0e0;border-radius:7px"></div>
     <label>예정 업로드일</label><input type="date" id="up-date">
     <label>상태</label>
     <select id="up-status">
@@ -899,15 +791,7 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
     <input type="hidden" id="hw-edit-id">
     <label>할 일</label><input type="text" id="hw-title" placeholder="예: 썸네일 수정 요청">
     <label>담당자 <span style="font-weight:400;color:#999">(복수 선택 가능)</span></label>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;padding:10px;background:#f8f8f8;border:1px solid #e0e0e0;border-radius:7px">
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="지니" style="width:auto;margin:0"> 지니</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="올리비아" style="width:auto;margin:0"> 올리비아</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="루비" style="width:auto;margin:0"> 루비</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="혀니" style="width:auto;margin:0"> 혀니</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="민" style="width:auto;margin:0"> 민</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="제이슨" style="width:auto;margin:0"> 제이슨</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="팀 전체" style="width:auto;margin:0"> 팀 전체</label>
-    </div>
+    <div id="hw-member-cbs" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;padding:10px;background:#f8f8f8;border:1px solid #e0e0e0;border-radius:7px"></div>
     <label>상태</label>
     <select id="hw-status"><option value="pending">진행 중</option><option value="done">완료</option></select>
     <label>마감일 <span style="font-weight:400;color:#999">(선택)</span></label>
@@ -928,8 +812,6 @@ body{background:var(--color-background-tertiary);-webkit-font-smoothing:antialia
 // ════════════════════════════════════════════
 const SUPABASE_URL = 'https://roujnirottmguqcodpnd.supabase.co';   // 예: https://xxxx.supabase.co
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvdWpuaXJvdHRtZ3VxY29kcG5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5ODkyMTYsImV4cCI6MjA5ODU2NTIxNn0.K_m66wYqYs03W12OC1rklNV5hoiUVhwEeoTXN_irG0Q'; // Supabase anon public key
-const YOUTUBE_API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Google Cloud Console에서 발급 (YouTube Data API v3)
-const YOUTUBE_CHANNEL_ID = 'UC9Ozb41qlL1CTnlsaxmKaGw'; // 안소희 @Ansohee.
 // ════════════════════════════════════════════
 
 // Supabase 설정 확인 (미설정 시에도 페이지가 뜨도록 안전 처리)
@@ -968,12 +850,9 @@ const MEMBERS = {
   olivia:{label:'올리비아',color:'#F98BA9'},
   ruby:  {label:'루비',    color:'#FF8F45'},
   hyeoni:{label:'혀니',    color:'#F4D77A'},
-  min:   {label:'민',      color:'#B7C96A'},
-  jason: {label:'제이슨',  color:'#7FB9E6'},
-  cherry:{label:'체리',    color:'#A10808'},
   team:  {label:'팀 전체', color:'#336688'}
 };
-const MEMBER_ORDER = ['jini','olivia','ruby','hyeoni','min','jason','cherry'];
+const MEMBER_ORDER = ['olivia','hyeoni','jini','ruby'];
 const LABEL_TO_KEY={};Object.keys(MEMBERS).forEach(k=>{LABEL_TO_KEY[MEMBERS[k].label]=k;});
 function memberChips(memberStr){
   if(!memberStr) return '';
@@ -984,6 +863,8 @@ function memberChips(memberStr){
 }
 // 한글 이름 기준 멤버 색상 맵 (MEMBERS 단일 출처에서 파생)
 const MEMBER_COLORS=Object.fromEntries(MEMBER_ORDER.map(k=>[MEMBERS[k].label,MEMBERS[k].color]));
+// 팀원 이름 목록 (MEMBER_ORDER 단일 출처에서 파생)
+const MEMBER_NAMES=MEMBER_ORDER.map(k=>MEMBERS[k].label);
 // 같은 제목·유형·멤버가 2건 이상이면 '반복 일정'으로 간주
 let repeatKeys=new Set();
 function isRepeatEv(ev){ return !!(ev&&ev.title&&repeatKeys.has(ev.title+'|'+ev.type+'|'+ev.member)); }
@@ -996,6 +877,7 @@ const statusMap = {
   shoot:  {label:'촬영 완료',   cls:'status-shoot'}
 };
 
+let ideaData=[],ideaFilter='all';
 let events=[],uploadData=[],noticeData=[],resourceData=[],memoData=[],handoverData=[],shootData=[],shootDatesData=[],adData=[],adKpiData=[],meetingData=[],meetingItemData=[];
 let memberExtraTasks={}, memberStatuses={}, memberSchedulesData={};
 let curYear=new Date().getFullYear(), curMonth=new Date().getMonth();
@@ -1045,14 +927,16 @@ async function loadData(){
       db.from('ads').select('*').order('created_at',{ascending:false}),
       db.from('ad_kpi').select('*'),
       db.from('meetings').select('*').order('created_at'),
-      db.from('meeting_items').select('*').order('sort_order')
+      db.from('meeting_items').select('*').order('sort_order'),
+      db.from('ideas').select('*').order('created_at',{ascending:false})
     ]);
-    const [evR,upR,noR,reR,moR,hwR,tkR,stR,msR,shR,sdR,adR,kpR,mtR,miR]=await Promise.race([query,timeout]);
+    const [evR,upR,noR,reR,moR,hwR,tkR,stR,msR,shR,sdR,adR,kpR,mtR,miR,idR]=await Promise.race([query,timeout]);
     events=evR.data||[]; uploadData=upR.data||[]; noticeData=noR.data||[];
     resourceData=reR.data||[]; memoData=moR.data||[]; handoverData=hwR.data||[];
     shootData=shR.data||[]; shootDatesData=sdR.data||[];
     adData=adR.data||[]; adKpiData=kpR.data||[];
     meetingData=mtR.data||[]; meetingItemData=miR.data||[];
+    ideaData=idR.data||[];
     // 업로드별 멤버 스케줄 맵핑
     memberSchedulesData={};
     (msR.data||[]).forEach(s=>{
@@ -1086,7 +970,7 @@ function subscribeRealtime(){
 }
 
 // ── 전체 렌더 ──
-function renderAll(){renderUpload();renderHome();renderCalendar();renderNotices();renderResources();renderMemos();renderHandovers();renderShoot();renderAd();renderMeeting();}
+function renderAll(){renderIdea();renderUpload();renderHome();renderCalendar();renderNotices();renderResources();renderMemos();renderHandovers();renderShoot();renderAd();renderMeeting();}
 
 // ── 자체 캘린더 ──
 const EVENT_TYPES={
@@ -1225,256 +1109,166 @@ function renderCalendar(){
   }
 }
 
-// ── 채널 현황 (YouTube) ──
-let chartMetric='subs', chartRange=30, channelStatsData=[], ytLoadedAt=0, ytChannel=null, ytVideos=[];
+// ── 아이디어 보관함 ──
+const IDEA_STATUS={
+  idea:   {label:'💡 아이디어', color:'#BA7517'},
+  hold:   {label:'🤔 검토 중',  color:'#4282AA'},
+  adopted:{label:'✅ 채택',     color:'#1D9E75'},
+  dropped:{label:'🗄️ 보류',     color:'#6B7280'}
+};
 
-function fmtCount(n){
-  n=Number(n)||0;
-  if(n>=100000000) return (n/100000000).toFixed(1).replace(/\.0$/,'')+'억';
-  if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'만';
-  return n.toLocaleString();
-}
-function timeAgo(iso){
-  const diff=(Date.now()-new Date(iso))/1000;
-  if(diff<3600) return Math.floor(diff/60)+'분 전';
-  if(diff<86400) return Math.floor(diff/3600)+'시간 전';
-  if(diff<86400*30) return Math.floor(diff/86400)+'일 전';
-  return new Date(iso).toLocaleDateString('ko-KR');
-}
+function setIdeaFilter(f){ ideaFilter=f; renderIdea(); }
 
-async function loadChannelPage(force){
-  const guide=document.getElementById('ch-setup-guide');
-  if(!YOUTUBE_API_KEY||YOUTUBE_API_KEY==='YOUR_YOUTUBE_API_KEY'){
-    if(guide) guide.style.display='block';
-    renderChannelChart();
+function renderIdea(){
+  // 필터 칩
+  const fEl=document.getElementById('idea-filters');
+  if(fEl){
+    const counts={all:ideaData.length};
+    Object.keys(IDEA_STATUS).forEach(k=>counts[k]=ideaData.filter(i=>i.status===k).length);
+    const chips=[['all','전체'],...Object.keys(IDEA_STATUS).map(k=>[k,IDEA_STATUS[k].label])];
+    fEl.innerHTML=chips.map(([k,lbl])=>{
+      const on=ideaFilter===k;
+      return `<button class="btn btn-sm" onclick="setIdeaFilter('${k}')" style="${on?'background:var(--accent);color:#1C1A15;border:none;font-weight:600':''}">${lbl} <span style="opacity:.65">${counts[k]||0}</span></button>`;
+    }).join('');
+  }
+
+  const listEl=document.getElementById('idea-list');
+  if(!listEl) return;
+  let data=ideaFilter==='all'?[...ideaData]:ideaData.filter(i=>i.status===ideaFilter);
+  // 좋아요 많은 순 → 최신순
+  data.sort((a,b)=>(b.votes||0)-(a.votes||0)||new Date(b.created_at)-new Date(a.created_at));
+
+  if(!data.length){
+    listEl.innerHTML=`<div style="grid-column:1/-1;padding:28px;text-align:center;font-size:12px;color:var(--color-text-secondary)">아이디어가 없어요. 떠오르는 걸 자유롭게 적어보세요 💡</div>`;
     return;
   }
-  if(guide) guide.style.display='none';
 
-  // 5분 캐시 (강제 새로고침 제외)
-  if(!force && ytLoadedAt && Date.now()-ytLoadedAt<5*60*1000){ renderChannelSummary(); renderChannelVideos(); renderChannelChart(); return; }
-
-  try{
-    // 1) 채널 정보 + 통계
-    const chRes=await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`).then(r=>r.json());
-    if(chRes.error) throw new Error(chRes.error.message);
-    ytChannel=chRes.items?.[0];
-    if(!ytChannel) throw new Error('채널을 찾을 수 없어요');
-
-    // 2) 최근 업로드 2개
-    const uploadsPl=ytChannel.contentDetails?.relatedPlaylists?.uploads;
-    const plRes=await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${uploadsPl}&maxResults=2&key=${YOUTUBE_API_KEY}`).then(r=>r.json());
-    const vids=(plRes.items||[]).map(it=>it.contentDetails.videoId);
-    if(vids.length){
-      const vRes=await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${vids.join(',')}&key=${YOUTUBE_API_KEY}`).then(r=>r.json());
-      ytVideos=vRes.items||[];
-    }
-    ytLoadedAt=Date.now();
-
-    renderChannelSummary();
-    renderChannelVideos();
-
-    // 3) 오늘 스냅샷 기록 (하루 1회, upsert)
-    await snapshotChannelStats();
-    // 4) 추이 데이터 로드 + 차트
-    await loadChannelStatsData();
-    renderChannelChart();
-  }catch(e){
-    showToast('채널 정보 로드 실패: '+e.message);
-    const sm=document.getElementById('ch-summary');
-    if(sm) sm.innerHTML=`<div class="card" style="grid-column:1/-1;font-size:12px;color:#A32D2D">불러오기 실패: ${e.message}<br><span style="color:var(--color-text-secondary)">API 키의 HTTP 리퍼러 제한 설정을 확인해보세요.</span></div>`;
-  }
-}
-
-async function snapshotChannelStats(){
-  if(!ytChannel||!db) return;
-  const st=ytChannel.statistics||{};
-  const todayStr=fmt(new Date());
-  try{
-    await db.from('channel_stats').upsert({
-      date:todayStr,
-      subscriber_count:parseInt(st.subscriberCount)||0,
-      view_count:parseInt(st.viewCount)||0,
-      video_count:parseInt(st.videoCount)||0
-    },{onConflict:'date'});
-  }catch(e){ console.warn('스냅샷 기록 실패:', e.message); }
-}
-
-async function loadChannelStatsData(){
-  if(!db) return;
-  const{data}=await db.from('channel_stats').select('*').order('date');
-  channelStatsData=data||[];
-}
-
-function renderChannelSummary(){
-  const el=document.getElementById('ch-summary');
-  if(!el||!ytChannel) return;
-  const st=ytChannel.statistics||{};
-  const subs=parseInt(st.subscriberCount)||0;
-  const views=parseInt(st.viewCount)||0;
-  const videos=parseInt(st.videoCount)||0;
-
-  // 전일(가장 최근 과거 스냅샷) 대비 증감
-  const todayStr=fmt(new Date());
-  const past=[...channelStatsData].filter(r=>r.date<todayStr).pop();
-  const dSubs=past?subs-(past.subscriber_count||0):null;
-  const dViews=past?views-(past.view_count||0):null;
-
-  const thumb=ytChannel.snippet?.thumbnails?.medium?.url||ytChannel.snippet?.thumbnails?.default?.url||'';
-  const cards=[
-    {icon:'ti-users', color:'#E24B4A', label:'구독자', value:fmtCount(subs), delta:dSubs},
-    {icon:'ti-eye', color:'#378ADD', label:'총 조회수', value:fmtCount(views), delta:dViews},
-    {icon:'ti-video', color:'#1D9E75', label:'총 영상 수', value:videos.toLocaleString()+'개', delta:null},
-  ];
-  el.innerHTML=`
-    <div class="card" style="display:flex;align-items:center;gap:12px">
-      ${thumb?`<img src="${thumb}" alt="채널" style="width:46px;height:46px;border-radius:50%;flex-shrink:0">`:''}
-      <div style="min-width:0">
-        <div style="font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ytChannel.snippet?.title||'안소희'}</div>
-        <div style="font-size:11px;color:var(--color-text-secondary)">@Ansohee.</div>
+  listEl.innerHTML=data.map(i=>{
+    const st=IDEA_STATUS[i.status]||IDEA_STATUS.idea;
+    const pc=MEMBER_COLORS[i.proposer]||'#336688';
+    const dim=i.status==='dropped';
+    return `<div class="card" style="padding:13px 14px;display:flex;flex-direction:column;gap:8px;opacity:${dim?.6:1}">
+      <div style="display:flex;align-items:start;gap:6px">
+        <span style="font-size:13px;font-weight:600;flex:1;line-height:1.45;cursor:pointer" onclick="openEditIdea('${i.id}')">${i.title}</span>
+        <span style="font-size:10px;color:${st.color};font-weight:600;flex-shrink:0;white-space:nowrap">${st.label}</span>
       </div>
-    </div>`+
-    cards.map(c=>`<div class="card">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
-        <i class="ti ${c.icon}" style="font-size:15px;color:${c.color}"></i>
-        <span style="font-size:11px;color:var(--color-text-secondary)">${c.label}</span>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:8px">
-        <span style="font-size:22px;font-weight:600">${c.value}</span>
-        ${c.delta!==null&&c.delta!==undefined?`<span style="font-size:11px;font-weight:600;color:${c.delta>0?'#1D9E75':c.delta<0?'#E24B4A':'var(--color-text-secondary)'}">${c.delta>0?'▲':c.delta<0?'▼':''} ${fmtCount(Math.abs(c.delta))}</span>`:''}
-      </div>
-      ${c.delta!==null&&c.delta!==undefined?`<div style="font-size:10px;color:var(--color-text-secondary);margin-top:2px">최근 기록 대비</div>`:''}
-    </div>`).join('');
-}
-
-function renderChannelVideos(){
-  const el=document.getElementById('ch-videos');
-  if(!el) return;
-  const updated=document.getElementById('ch-videos-updated');
-  if(updated&&ytLoadedAt) updated.textContent='업데이트: '+new Date(ytLoadedAt).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
-  if(!ytVideos.length){
-    el.innerHTML=`<div class="card" style="grid-column:1/-1;font-size:12px;color:var(--color-text-secondary)">최근 영상 정보를 불러오지 못했어요</div>`;
-    return;
-  }
-  el.innerHTML=ytVideos.map(v=>{
-    const sn=v.snippet||{}, st=v.statistics||{};
-    const thumb=sn.thumbnails?.medium?.url||sn.thumbnails?.high?.url||'';
-    return `<div class="card" style="padding:0;overflow:hidden">
-      <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" style="display:block;position:relative">
-        ${thumb?`<img src="${thumb}" alt="" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block">`:''}
-      </a>
-      <div style="padding:12px 14px">
-        <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
-          <div style="font-size:13px;font-weight:600;line-height:1.45;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${sn.title||''}</div>
-        </a>
-        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:10px">${timeAgo(sn.publishedAt)} 게시</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-          <div style="text-align:center;padding:7px 4px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
-            <div style="font-size:14px;font-weight:600">${fmtCount(st.viewCount)}</div>
-            <div style="font-size:10px;color:var(--color-text-secondary)">조회수</div>
-          </div>
-          <div style="text-align:center;padding:7px 4px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
-            <div style="font-size:14px;font-weight:600">${fmtCount(st.likeCount)}</div>
-            <div style="font-size:10px;color:var(--color-text-secondary)">좋아요</div>
-          </div>
-          <div style="text-align:center;padding:7px 4px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
-            <div style="font-size:14px;font-weight:600">${fmtCount(st.commentCount)}</div>
-            <div style="font-size:10px;color:var(--color-text-secondary)">댓글</div>
-          </div>
-        </div>
+      ${i.detail?`<div style="font-size:11.5px;color:var(--color-text-secondary);line-height:1.6;white-space:pre-wrap">${i.detail}</div>`:''}
+      <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+        ${i.proposer?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;font-weight:500;background:${pc}22;color:${pc}">${i.proposer}</span>`:''}
+        <button onclick="voteIdea('${i.id}')" title="좋아요" style="margin-left:auto;background:none;border:1px solid var(--color-border-secondary);border-radius:999px;padding:2px 9px;cursor:pointer;font-size:11px;display:flex;align-items:center;gap:4px">👍 <span style="font-weight:600">${i.votes||0}</span></button>
+        ${i.status==='adopted'?`<button onclick="ideaToUpload('${i.id}')" title="업로드 일정으로 만들기" style="background:none;border:1px solid var(--color-border-secondary);border-radius:999px;padding:2px 9px;cursor:pointer;font-size:11px">📤 일정으로</button>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
-function setChartMetric(m){
-  chartMetric=m;
-  ['subs','views'].forEach(k=>{
-    const b=document.getElementById('ch-metric-'+k);
-    if(!b)return;
-    const on=k===m;
-    b.style.background=on?'#4282AA':''; b.style.color=on?'#fff':''; b.style.borderColor=on?'#4282AA':'';
-  });
-  renderChannelChart();
-}
-function setChartRange(r){
-  chartRange=r;
-  [30,90,0].forEach(k=>{
-    const b=document.getElementById('ch-range-'+k);
-    if(!b)return;
-    const on=k===r;
-    b.style.background=on?'#4282AA':''; b.style.color=on?'#fff':''; b.style.borderColor=on?'#4282AA':'';
-  });
-  renderChannelChart();
+function openAddIdea(){
+  document.getElementById('idea-modal-title').textContent='아이디어 추가';
+  document.getElementById('idea-edit-id').value='';
+  ['idea-title','idea-detail'].forEach(id=>document.getElementById(id).value='');
+  const sel=document.getElementById('idea-proposer');
+  sel.innerHTML=MEMBER_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
+  document.getElementById('idea-status').value='idea';
+  document.getElementById('idea-delete-btn').style.display='none';
+  document.getElementById('modal-idea').style.display='flex';
 }
 
-function renderChannelChart(){
-  const el=document.getElementById('ch-chart');
-  if(!el) return;
-  let data=[...channelStatsData];
-  if(chartRange>0){
-    const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-chartRange);
-    const cstr=fmt(cutoff);
-    data=data.filter(r=>r.date>=cstr);
+function openEditIdea(id){
+  const i=ideaData.find(x=>x.id===id); if(!i) return;
+  document.getElementById('idea-modal-title').textContent='아이디어 수정';
+  document.getElementById('idea-edit-id').value=id;
+  document.getElementById('idea-title').value=i.title||'';
+  document.getElementById('idea-detail').value=i.detail||'';
+  const sel=document.getElementById('idea-proposer');
+  sel.innerHTML=MEMBER_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
+  sel.value=i.proposer||MEMBER_NAMES[0];
+  document.getElementById('idea-status').value=i.status||'idea';
+  document.getElementById('idea-delete-btn').style.display='inline-flex';
+  document.getElementById('modal-idea').style.display='flex';
+}
+
+async function saveIdea(){
+  const id=document.getElementById('idea-edit-id').value;
+  const title=document.getElementById('idea-title').value.trim();
+  if(!title){showToast('아이디어 제목을 입력해주세요');return;}
+  const payload={
+    title,
+    detail:document.getElementById('idea-detail').value.trim(),
+    proposer:document.getElementById('idea-proposer').value,
+    status:document.getElementById('idea-status').value
+  };
+  let error;
+  if(id){({error}=await db.from('ideas').update(payload).eq('id',id));}
+  else{({error}=await db.from('ideas').insert({...payload,votes:0}));}
+  if(error){showToast('저장 실패: '+error.message);return;}
+  closeModal('modal-idea');showToast(id?'수정됐어요 ✓':'추가됐어요 ✓');
+}
+
+async function deleteIdea(){
+  const id=document.getElementById('idea-edit-id').value;
+  if(!id||!confirm('이 아이디어를 삭제할까요?'))return;
+  await db.from('ideas').delete().eq('id',id);
+  closeModal('modal-idea');showToast('삭제됐어요');
+}
+
+async function voteIdea(id){
+  const i=ideaData.find(x=>x.id===id); if(!i) return;
+  const next=(i.votes||0)+1;
+  i.votes=next; renderIdea();               // 즉시 반영
+  const {error}=await db.from('ideas').update({votes:next}).eq('id',id);
+  if(error){ i.votes=next-1; renderIdea(); showToast('실패: '+error.message); }
+}
+
+// 채택된 아이디어 → 업로드 일정 추가 모달로
+function ideaToUpload(id){
+  const i=ideaData.find(x=>x.id===id); if(!i) return;
+  showPage('upload');
+  openAddUpload();
+  document.getElementById('up-title').value=i.title;
+  if(i.proposer){
+    document.querySelectorAll('.up-member-cb').forEach(cb=>{
+      if(cb.value===i.proposer){ cb.checked=true; toggleMemberDates(cb); }
+    });
   }
-  if(data.length<2){
-    el.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;gap:8px">
-      <i class="ti ti-chart-line" style="font-size:32px;color:var(--color-border-secondary)"></i>
-      <span style="font-size:12px;color:var(--color-text-secondary)">${data.length===1?'스냅샷이 1개 기록됐어요. 내일부터 추이가 그려져요!':'아직 기록된 데이터가 없어요. 데이터가 쌓이면 추이가 표시돼요.'}</span>
-    </div>`;
-    return;
-  }
-
-  const key=chartMetric==='subs'?'subscriber_count':'view_count';
-  const color=chartMetric==='subs'?'#E24B4A':'#378ADD';
-  const vals=data.map(r=>Number(r[key])||0);
-  const min=Math.min(...vals), max=Math.max(...vals);
-  const pad=(max-min)*0.12||Math.max(max*0.01,1);
-  const yMin=Math.max(0,min-pad), yMax=max+pad;
-
-  const W=800, H=240, L=64, R=16, T=14, B=30;
-  const iw=W-L-R, ih=H-T-B;
-  const x=i=>L+(data.length===1?iw/2:i*(iw/(data.length-1)));
-  const y=v=>T+ih-((v-yMin)/(yMax-yMin))*ih;
-
-  const pts=vals.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-  const areaPts=`${L},${T+ih} ${pts} ${x(vals.length-1).toFixed(1)},${T+ih}`;
-
-  // y축 눈금 4개
-  let yTicks='';
-  for(let t=0;t<=3;t++){
-    const v=yMin+(yMax-yMin)*t/3;
-    const yy=y(v);
-    yTicks+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
-      <text x="${L-8}" y="${yy+3.5}" text-anchor="end" font-size="10" fill="var(--color-text-secondary)">${fmtCount(Math.round(v))}</text>`;
-  }
-  // x축 라벨 (최대 6개)
-  let xTicks='';
-  const step=Math.max(1,Math.ceil(data.length/6));
-  data.forEach((r,i)=>{
-    if(i%step===0||i===data.length-1){
-      xTicks+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">${r.date.slice(5).replace('-','/')}</text>`;
-    }
-  });
-  // 포인트 (30개 이하일 때만)
-  const dots=data.length<=31?vals.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="${color}"><title>${data[i].date}: ${Number(v).toLocaleString()}</title></circle>`).join(''):'';
-
-  const first=vals[0], last=vals[vals.length-1], delta=last-first;
-  el.innerHTML=`
-    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-      <span style="font-size:20px;font-weight:600">${fmtCount(last)}</span>
-      <span style="font-size:12px;font-weight:600;color:${delta>0?'#1D9E75':delta<0?'#E24B4A':'var(--color-text-secondary)'}">${delta>0?'▲':delta<0?'▼':''} ${fmtCount(Math.abs(delta))} <span style="font-weight:400;color:var(--color-text-secondary)">(기간 내 변화)</span></span>
-    </div>
-    <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
-      ${yTicks}${xTicks}
-      <polygon points="${areaPts}" fill="${color}18"/>
-      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      ${dots}
-    </svg>`;
 }
 
 // ── 촬영 ──
-const SHOOT_MEMBERS = ['지니','올리비아','루비','혀니','민','제이슨','체리','셀프캠'];
+const SHOOT_MEMBERS = [...MEMBER_NAMES,'셀프캠'];
+
+// ── 멤버 관련 UI 자동 생성 (MEMBER_ORDER 하나만 고치면 전체 반영) ──
+function buildMemberUI(){
+  const TH_C='padding:10px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)';
+  const TH_L='padding:10px 14px;text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)';
+  const DIN='flex:1;font-size:11px;padding:4px 6px;border:1px solid #d0d0d0;border-radius:5px;outline:none';
+
+  // 캘린더 일정 멤버
+  const ev=document.getElementById('ev-member-cbs');
+  if(ev) ev.innerHTML=[...MEMBER_ORDER,'team'].map(k=>
+    `<label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="ev-member-cb" value="${k}" style="width:auto;margin:0"> ${MEMBERS[k].label}</label>`).join('');
+
+  // 업로드 담당자 (+ 편집 기간)
+  const up=document.getElementById('up-member-rows');
+  if(up) up.innerHTML=UPLOAD_MEMBERS.map(n=>
+    `<div style="display:flex;align-items:center;gap:8px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;cursor:pointer;min-width:80px"><input type="checkbox" class="up-member-cb" value="${n}" style="width:auto;margin:0" onchange="toggleMemberDates(this)"> ${n}</label>
+      <div id="dates-${n}" style="display:none;flex:1;gap:6px;align-items:center">
+        <input type="date" id="es-${n}" style="${DIN}">
+        <span style="font-size:11px;color:#888">~</span>
+        <input type="date" id="ee-${n}" style="${DIN}">
+      </div>
+    </div>`).join('');
+
+  // To Do 담당자
+  const hw=document.getElementById('hw-member-cbs');
+  if(hw) hw.innerHTML=[...MEMBER_NAMES,'팀 전체'].map(n=>
+    `<label style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:400;cursor:pointer"><input type="checkbox" class="hw-member-cb" value="${n}" style="width:auto;margin:0"> ${n}</label>`).join('');
+
+  // 촬영 테이블 헤더
+  const th=document.getElementById('shoot-thead-row');
+  if(th) th.innerHTML=`<th style="${TH_L};min-width:140px">영상 제목</th><th style="${TH_L};min-width:90px">촬영일</th>`
+    + SHOOT_MEMBERS.map(n=>`<th style="${TH_C}">${n}</th>`).join('')
+    + `<th style="${TH_L};min-width:120px">촬영팀</th>`;
+}
 const SHOOT_MEMBER_COLORS = {...MEMBER_COLORS, '셀프캠':'#6B7280'};
 function renderShoot(){
   let data=[...uploadData];
@@ -1509,7 +1303,7 @@ function renderShoot(){
       ${memberCells}
       <td style="padding:10px 14px;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)">${sh.shoot_team||''}</td>
     </tr>`;
-  }).join('') || `<tr><td colspan="11" style="padding:24px;text-align:center;font-size:12px;color:var(--color-text-secondary)">등록된 영상이 없어요</td></tr>`;
+  }).join('') || `<tr><td colspan="${SHOOT_MEMBERS.length+3}" style="padding:24px;text-align:center;font-size:12px;color:var(--color-text-secondary)">등록된 영상이 없어요</td></tr>`;
 }
 
 function addShootDateRow(date='', note=''){
@@ -1612,7 +1406,7 @@ const MEETING_SECTIONS=[
   {key:'item',  label:'💡 아이템 논의', color:'#BA7517', bg:'#FAEEDA'},
   {key:'etc',   label:'💬 기타', color:'#0C447C', bg:'#E6F1FB'},
 ];
-const MENTION_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
+const MENTION_MEMBERS=[...MEMBER_NAMES];
 const MEMBER_COLOR_MAP=MEMBER_COLORS;
 let curMentions=[];
 
@@ -2068,7 +1862,7 @@ async function deleteAdFromModal(){
 
 // ── 업로드 ──
 let upMemberFilter='all', upStatusFilter='all';
-const UP_FILTER_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨','외주','미정'];
+const UP_FILTER_MEMBERS=[...MEMBER_NAMES,'외주','미정'];
 const UP_FILTER_STATUS=[['plan','기획'],['shoot','촬영 완료'],['edit','편집 중'],['review','검수 중'],['done','업로드 완료']];
 
 function renderUploadFilterChips(){
@@ -2169,7 +1963,7 @@ function renderTimeline(){
   const COL=24;
   const today=new Date();
   const pad=n=>String(n).padStart(2,'0');
-  const TIMELINE_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨'];
+  const TIMELINE_MEMBERS=[...MEMBER_NAMES];
   const memberColors=MEMBER_COLORS;
   const grid=document.getElementById('timeline-grid');
   if(!grid) return;
@@ -2754,8 +2548,6 @@ function showPage(name,el){
   }
   // 현재 페이지 기억 (새로고침 후 복원용)
   location.hash=name;
-  // 채널 현황은 진입 시 로드
-  if(name==='channel') loadChannelPage();
 }
 
 function restorePage(){
@@ -2824,7 +2616,7 @@ function toggleMemberDates(cb){
   if(datesDiv) datesDiv.style.display=cb.checked?'flex':'none';
 }
 
-const UPLOAD_MEMBERS=['지니','올리비아','루비','혀니','민','제이슨','외주','미정'];
+const UPLOAD_MEMBERS=[...MEMBER_NAMES,'외주','미정'];
 
 function openAddUpload(){
   document.getElementById('up-modal-title').textContent='업로드 일정 추가';
@@ -3135,6 +2927,7 @@ async function deleteHandoverFromModal(){
 }
 
 // ── 초기화 ──
+buildMemberUI();
 loadData();
 subscribeRealtime();
 restorePage();
